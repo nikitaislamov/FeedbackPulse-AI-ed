@@ -71,4 +71,4 @@ pnpm dev
 
 ## Лицензия
 
-MIT
+MIT.
