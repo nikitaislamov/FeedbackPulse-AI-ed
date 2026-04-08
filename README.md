@@ -4,7 +4,7 @@ SaaS-сервис для AI-анализа клиентских отзывов. 
 
 ## Возможности
 
-- **Импорт данных** — Drag-and-drop загрузка CSV и Excel файлов (до 5MB)
+- **Импорт данных** — Drag-and-drop загрузка CSV и Excel файлов (до 10MB)
 - **Умный маппинг** — Автоматическое определение колонок с текстом отзывов и рейтингом
 - **AI-анализ** — Определение тональности (positive/negative/neutral), категоризация тем, обнаружение аномалий
 - **Визуализация** — Интерактивные графики: круговая диаграмма тональности, столбчатая диаграмма тем
@@ -15,7 +15,7 @@ SaaS-сервис для AI-анализа клиентских отзывов. 
 
 - **Frontend**: Next.js 16, React 19, TypeScript, Tailwind CSS v4
 - **UI**: shadcn/ui, Recharts
-- **AI**: Vercel AI SDK 6, OpenAI GPT-4o-mini
+- **AI**: Vercel AI SDK 6, Google Gemini 1.5 Flash
 - **Парсинг**: PapaParse (CSV), SheetJS (Excel)
 
 ## Установка
@@ -26,21 +26,21 @@ git clone <repository-url>
 cd feedbackpulse-ai
 
 # Установка зависимостей
-pnpm install
+npm install
 
 # Настройка переменных окружения
 cp .env.example .env.local
-# Добавьте OPENAI_API_KEY в .env.local
+# Добавьте GOOGLE_GENERATIVE_AI_API_KEY в .env.local
 
 # Запуск dev-сервера
-pnpm dev
+npm run dev
 ```
 
 ## Переменные окружения
 
 | Переменная | Описание |
 |------------|----------|
-| `OPENAI_API_KEY` | API ключ OpenAI для AI-анализа |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | API ключ Google Gemini для AI-анализа |
 
 ## Структура проекта
 
