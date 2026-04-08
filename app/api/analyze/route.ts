@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       .join("\n\n");
 
     const { output } = await generateText({
-      model: google("gemini-1.5-pro"),
+      model: google("gemini-2.5-flash-preview-04-17"),
       output: Output.object({
         schema: reviewAnalysisSchema,
       }),
