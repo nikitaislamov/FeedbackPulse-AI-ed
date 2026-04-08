@@ -1,5 +1,5 @@
 import { generateText, Output } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 import { z } from "zod";
 import { SYSTEM_PROMPT } from "@/lib/openai";
 
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       .join("\n\n");
 
     const { output } = await generateText({
-      model: openai("gpt-4o-mini"),
+      model: google("gemini-1.5-flash"),
       output: Output.object({
         schema: reviewAnalysisSchema,
       }),
