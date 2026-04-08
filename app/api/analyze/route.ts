@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       .join("\n\n");
 
     const { output } = await generateText({
-      model: google("gemini-2.0-flash"),
+      model: google("gemini-1.5-pro"),
       output: Output.object({
         schema: reviewAnalysisSchema,
       }),
@@ -75,6 +75,16 @@ export async function POST(req: Request) {
     console.error("Analysis error:", error);
     
     const errorMessage = error instanceof Error ? error.message : "Неизвестная ошибка";
+    
+    // Проверка на превышение лимита
+    if (errorMessage.includes("quota") || errorMessage.includes("429") || errorMessage.includes("RESOURCE_EXHAUSTED")) {
+      return Response.json(
+        { 
+          error: "Превышен лимит запросов к Google AI. Пожалуйста, подождите несколько минут или обновите ваш план на https://ai.google.dev/pricing" 
+        },
+        { status: 429 }
+      );
+    }
     
     return Response.json(
       { error: `Ошибка анализа: ${errorMessage}` },
