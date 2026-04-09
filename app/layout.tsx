@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
@@ -23,11 +24,13 @@ export default function RootLayout({
   return (
     <html lang="ru" className="dark">
       <body className={`${inter.className} antialiased min-h-screen flex flex-col bg-background text-foreground`}>
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <Toaster richColors position="top-right" />
-        <Analytics />
+        <AuthProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <Toaster richColors position="top-right" />
+          <Analytics />
+        </AuthProvider>
       </body>
     </html>
   );
