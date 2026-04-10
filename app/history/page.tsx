@@ -10,7 +10,6 @@ import { useAuth } from "@/context/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { AnalysisResult } from "@/app/api/analyze/route";
 
 const STATUS_CONFIG = {
   done: { label: "Готово", icon: CheckCircle, color: "text-green-500" },
@@ -38,8 +37,13 @@ export default function HistoryPage() {
       .select("*")
       .eq("user_id", session.user.id)
       .order("created_at", { ascending: false })
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        if (error) console.error("Ошибка загрузки истории:", error.message);
         setAnalyses(data ?? []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Сетевая ошибка при загрузке истории:", err);
         setLoading(false);
       });
   }, [session, authLoading]);

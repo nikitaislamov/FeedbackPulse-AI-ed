@@ -27,7 +27,10 @@ export default function RegisterPage() {
     }
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signUp({
+      // Разлогиниваем текущего пользователя перед созданием нового аккаунта
+      await supabase.auth.signOut();
+
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -36,8 +39,15 @@ export default function RegisterPage() {
         },
       });
       if (error) throw error;
-      toast.success("Аккаунт создан! Проверьте email для подтверждения.");
-      router.push("/dashboard");
+
+      if (data.session) {
+        // Подтверждение email отключено — сразу входим
+        router.push("/dashboard");
+      } else {
+        // Требуется подтверждение email
+        toast.success("Аккаунт создан! Проверьте email и перейдите по ссылке для подтверждения.");
+        router.push("/login");
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Ошибка регистрации");
     } finally {
@@ -46,6 +56,7 @@ export default function RegisterPage() {
   }
 
   async function handleGoogleLogin() {
+    await supabase.auth.signOut();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: `${location.origin}/dashboard` },
