@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Upload, FileSpreadsheet } from "lucide-react";
@@ -19,7 +19,7 @@ import Link from "next/link";
 
 type Step = "idle" | "upload" | "mapping" | "analyzing" | "results";
 
-export default function DashboardPage() {
+function DashboardContent() {
   const { session, profile } = useAuth();
   const searchParams = useSearchParams();
   const [step, setStep] = useState<Step>("idle");
@@ -258,5 +258,13 @@ export default function DashboardPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-8">Загрузка...</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }
