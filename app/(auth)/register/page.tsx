@@ -59,9 +59,10 @@ export default function RegisterPage() {
     await supabase.auth.signOut();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${location.origin}/dashboard` },
+      options: { redirectTo: `${location.origin}/auth/callback` },
     });
     if (error) toast.error(error.message);
+
   }
 
   return (
