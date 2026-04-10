@@ -30,7 +30,10 @@ export default function RegisterPage() {
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { full_name: fullName } },
+        options: {
+          data: { full_name: fullName },
+          emailRedirectTo: `${location.origin}/dashboard`,
+        },
       });
       if (error) throw error;
       toast.success("Аккаунт создан! Проверьте email для подтверждения.");
