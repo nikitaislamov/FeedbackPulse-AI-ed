@@ -7,7 +7,7 @@ import { ru } from "date-fns/locale";
 import { FileText, Eye, Clock, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { supabase, type Analysis } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { AnalysisResult } from "@/app/api/analyze/route";
@@ -27,7 +27,11 @@ export default function HistoryPage() {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!session) { router.push("/login"); return; }
+
+    if (!session) {
+      setLoading(false);
+      return;
+    }
 
     supabase
       .from("analyses")
@@ -38,7 +42,7 @@ export default function HistoryPage() {
         setAnalyses(data ?? []);
         setLoading(false);
       });
-  }, [session, authLoading, router]);
+  }, [session, authLoading]);
 
   function openAnalysis(analysis: Analysis) {
     if (analysis.result_json) {
@@ -68,16 +72,20 @@ export default function HistoryPage() {
         <Card className="border-dashed">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <FileText className="h-12 w-12 text-muted-foreground/50 mb-4" />
-            <p className="text-lg font-medium">Анализов пока нет</p>
+            <p className="text-lg font-medium">Ни одного анализа не выполнялось</p>
             <p className="text-sm text-muted-foreground mt-1 mb-4">
-              Загрузите файл с отзывами, чтобы начать
+              {session
+                ? "Загрузите файл с отзывами, чтобы начать"
+                : "Войдите в аккаунт и загрузите файл с отзывами, чтобы начать"}
             </p>
-            <Button onClick={() => router.push("/dashboard")}>Новый анализ</Button>
+            <Button onClick={() => router.push(session ? "/dashboard" : "/login")}>
+              {session ? "Новый анализ" : "Войти"}
+            </Button>
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-3">
-          {analyses.map(analysis => {
+          {analyses.map((analysis) => {
             const status = STATUS_CONFIG[analysis.status];
             const Icon = status.icon;
             return (
@@ -88,9 +96,7 @@ export default function HistoryPage() {
                       <FileText className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium">
-                        {analysis.file_name ?? "Без названия"}
-                      </p>
+                      <p className="font-medium">{analysis.file_name ?? "Без названия"}</p>
                       <div className="flex items-center gap-3 mt-1">
                         <span className="text-xs text-muted-foreground">
                           {format(new Date(analysis.created_at), "d MMM yyyy, HH:mm", { locale: ru })}
