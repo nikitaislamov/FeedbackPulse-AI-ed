@@ -38,7 +38,7 @@
     "@radix-ui/react-toggle-group": "1.1.11",
     "@radix-ui/react-tooltip": "1.2.8",
     "@vercel/analytics": "1.6.1",
-    "@ai-sdk/google": "^1.0.0",
+    "@ai-sdk/google": "^2.0.0",
     "@supabase/supabase-js": "^2.49.4",
     "ai": "^6.0.145",
     "autoprefixer": "^10.4.20",
