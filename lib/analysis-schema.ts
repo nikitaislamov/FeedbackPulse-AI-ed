@@ -22,15 +22,14 @@ const ReviewAnalysis = z.object({
 const TopProblem = z.object({
   title: z.string(),
   description: z.string(),
-  // Model sometimes returns 0–100 instead of 0–1; sanitize() normalizes it after validation
-  affectedShare: z.number().min(0),
+  affectedShare: z.number().min(0).max(1),
   actionRecommendation: z.string(),
 });
 
 export const AnalysisResultSchema = z.object({
   reviews: z.array(ReviewAnalysis),
   summary: z.string(),
-  topProblems: z.array(TopProblem).max(3),
+  topProblems: z.array(TopProblem).min(1).max(3),
   sentimentDistribution: z.object({
     positive: z.number().int().min(0),
     neutral: z.number().int().min(0),

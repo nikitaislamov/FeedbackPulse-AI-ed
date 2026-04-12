@@ -140,14 +140,15 @@ export async function POST(req: Request) {
 
     return Response.json({ result });
   } catch (error) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.error("[analyze] error:", msg);
+    console.error("[analyze] Gemini error:", error);
 
-    if (msg.includes("429") || msg.toLowerCase().includes("rate limit")) {
-      return Response.json(
-        { error: "Превышен лимит запросов к AI. Подождите немного и попробуйте снова." },
-        { status: 429 }
-      );
+    if (error instanceof Error) {
+      if (error.message.includes("429") || error.message.toLowerCase().includes("rate")) {
+        return Response.json(
+          { error: "Превышен лимит запросов к AI. Подождите немного и попробуйте снова." },
+          { status: 429 }
+        );
+      }
     }
 
     return Response.json({ error: "Ошибка при выполнении анализа. Попробуйте ещё раз." }, { status: 500 });
