@@ -24,7 +24,7 @@ export default function HomePage() {
     setIsLoading(true);
     try {
       const data = await parseFile(file);
-      
+
       if (data.rows.length === 0) {
         toast.error("Файл пуст или не содержит данных");
         return;
@@ -94,56 +94,68 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Hero Section - показываем только на шаге upload */}
+    <div className="container mx-auto px-4 sm:px-6 py-8">
+      {/* Hero Section — только на шаге upload */}
       {step === "upload" && (
-        <section className="mb-12 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary mb-6">
-            <Sparkles className="h-4 w-4" />
+        <section className="text-center mb-8 sm:mb-12 pt-2 sm:pt-6 lg:pt-16">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-xs sm:text-sm font-medium text-primary mb-6">
+            <Sparkles className="h-4 w-4 shrink-0" />
             AI-powered анализ отзывов
           </div>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mb-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold tracking-tight leading-tight mb-4">
             Превращайте отзывы в{" "}
             <span className="text-primary">действенные инсайты</span>
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+          <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mt-4 mb-8">
             FeedbackPulse AI анализирует ваши отзывы клиентов, определяет тональность,
             выявляет проблемы и формирует готовый план действий
           </p>
 
           {/* Features */}
-          <div className="grid gap-4 md:grid-cols-3 max-w-3xl mx-auto mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto mb-8 sm:mb-12">
             <Card className="border-muted">
-              <CardContent className="pt-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mx-auto mb-4">
-                  <Zap className="h-6 w-6 text-primary" />
+              <CardContent className="p-5 sm:p-6">
+                <div className="flex items-start gap-3 sm:flex-col sm:items-center sm:text-center">
+                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 sm:mb-4">
+                    <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1 sm:mb-2">Быстрый анализ</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Мгновенная обработка до 50 отзывов за один запрос
+                    </p>
+                  </div>
                 </div>
-                <h3 className="font-semibold mb-2">Быстрый анализ</h3>
-                <p className="text-sm text-muted-foreground">
-                  Мгновенная обработка до 50 отзывов за один запрос
-                </p>
               </CardContent>
             </Card>
             <Card className="border-muted">
-              <CardContent className="pt-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mx-auto mb-4">
-                  <BarChart3 className="h-6 w-6 text-primary" />
+              <CardContent className="p-5 sm:p-6">
+                <div className="flex items-start gap-3 sm:flex-col sm:items-center sm:text-center">
+                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 sm:mb-4">
+                    <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1 sm:mb-2">Визуализация</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Наглядные графики и диаграммы по результатам анализа
+                    </p>
+                  </div>
                 </div>
-                <h3 className="font-semibold mb-2">Визуализация</h3>
-                <p className="text-sm text-muted-foreground">
-                  Наглядные графики и диаграммы по результатам анализа
-                </p>
               </CardContent>
             </Card>
-            <Card className="border-muted">
-              <CardContent className="pt-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mx-auto mb-4">
-                  <Shield className="h-6 w-6 text-primary" />
+            <Card className="border-muted sm:col-span-2 lg:col-span-1">
+              <CardContent className="p-5 sm:p-6">
+                <div className="flex items-start gap-3 sm:flex-col sm:items-center sm:text-center">
+                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 sm:mb-4">
+                    <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1 sm:mb-2">План действий</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Конкретные рекомендации для улучшения продукта
+                    </p>
+                  </div>
                 </div>
-                <h3 className="font-semibold mb-2">План действий</h3>
-                <p className="text-sm text-muted-foreground">
-                  Конкретные рекомендации для улучшения продукта
-                </p>
               </CardContent>
             </Card>
           </div>
@@ -152,29 +164,29 @@ export default function HomePage() {
 
       {/* Progress Steps */}
       {step !== "upload" && (
-        <div className="mb-8">
-          <div className="flex items-center justify-center gap-4 mb-6">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex items-center justify-center gap-1 sm:gap-4 mb-4 sm:mb-6 overflow-x-auto">
             <StepIndicator
               number={1}
               label="Загрузка"
               active={step === "upload"}
               completed={step !== "upload"}
             />
-            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+            <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
             <StepIndicator
               number={2}
               label="Маппинг"
               active={step === "mapping"}
               completed={step === "analyzing" || step === "results"}
             />
-            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+            <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
             <StepIndicator
               number={3}
               label="Анализ"
               active={step === "analyzing"}
               completed={step === "results"}
             />
-            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+            <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
             <StepIndicator
               number={4}
               label="Результаты"
@@ -183,7 +195,7 @@ export default function HomePage() {
             />
           </div>
           <div className="flex justify-center">
-            <Button variant="ghost" size="sm" onClick={handleReset}>
+            <Button variant="ghost" size="sm" onClick={handleReset} className="min-h-11">
               Начать заново
             </Button>
           </div>
@@ -194,7 +206,7 @@ export default function HomePage() {
       <div className="max-w-4xl mx-auto">
         {step === "upload" && (
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-center mb-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-center mb-4">
               Загрузите файл с отзывами
             </h2>
             <FileUploader onFileSelect={handleFileSelect} isLoading={isLoading} />
@@ -204,7 +216,7 @@ export default function HomePage() {
         {step === "mapping" && parsedData && (
           <div className="space-y-4">
             <div className="text-center mb-4">
-              <h2 className="text-xl font-semibold">Настройте маппинг колонок</h2>
+              <h2 className="text-lg sm:text-xl font-semibold">Настройте маппинг колонок</h2>
               <p className="text-sm text-muted-foreground mt-1">
                 Найдено {parsedData.headers.length} колонок и {parsedData.rows.length} строк
               </p>
@@ -239,9 +251,9 @@ function StepIndicator({
   completed: boolean;
 }) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5 sm:gap-2">
       <div
-        className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors ${
+        className={`flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full text-xs sm:text-sm font-medium transition-colors ${
           active
             ? "bg-primary text-primary-foreground"
             : completed
@@ -252,7 +264,7 @@ function StepIndicator({
         {number}
       </div>
       <span
-        className={`text-sm font-medium ${
+        className={`hidden sm:block text-sm font-medium ${
           active ? "text-foreground" : "text-muted-foreground"
         }`}
       >

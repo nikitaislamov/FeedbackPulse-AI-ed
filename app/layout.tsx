@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
@@ -16,6 +16,12 @@ export const metadata: Metadata = {
   keywords: ["анализ отзывов", "AI", "машинное обучение", "аналитика", "SaaS"],
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" className="dark">
-      <body className={`${inter.className} antialiased min-h-screen flex flex-col bg-background text-foreground`}>
+      <body className={`${inter.className} antialiased min-h-dvh flex flex-col bg-background text-foreground`}>
         <AuthProvider>
           <Header />
           <main className="flex-1">{children}</main>

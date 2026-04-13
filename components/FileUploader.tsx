@@ -24,7 +24,7 @@ export function FileUploader({ onFileSelect, isLoading }: FileUploaderProps) {
       "application/vnd.ms-excel",
     ];
     const validExtensions = [".csv", ".xlsx", ".xls"];
-    
+
     const hasValidExtension = validExtensions.some((ext) =>
       file.name.toLowerCase().endsWith(ext)
     );
@@ -101,10 +101,19 @@ export function FileUploader({ onFileSelect, isLoading }: FileUploaderProps) {
   return (
     <div className="space-y-4">
       {error && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
+        <div className="space-y-2">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+          <Button
+            variant="outline"
+            onClick={() => setError(null)}
+            className="min-h-11 w-full sm:w-auto"
+          >
+            Попробовать снова
+          </Button>
+        </div>
       )}
 
       {!selectedFile ? (
@@ -119,7 +128,7 @@ export function FileUploader({ onFileSelect, isLoading }: FileUploaderProps) {
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
         >
-          <CardContent className="flex flex-col items-center justify-center py-12">
+          <CardContent className="p-0">
             <input
               type="file"
               id="file-upload"
@@ -130,15 +139,16 @@ export function FileUploader({ onFileSelect, isLoading }: FileUploaderProps) {
             />
             <label
               htmlFor="file-upload"
-              className="flex flex-col items-center cursor-pointer"
+              className="flex flex-col items-center justify-center min-h-40 sm:min-h-48 cursor-pointer px-4 py-6"
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 mb-4">
-                <Upload className="h-8 w-8 text-primary" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 mb-4">
+                <Upload className="h-7 w-7 text-primary" />
               </div>
-              <p className="text-lg font-medium mb-2">
-                Перетащите файл сюда или нажмите для выбора
+              <p className="text-base font-medium mb-1 text-center">
+                <span className="sm:hidden">Нажмите, чтобы выбрать файл</span>
+                <span className="hidden sm:inline">Перетащите файл сюда или нажмите для выбора</span>
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground mt-3">
                 Поддерживаемые форматы: CSV, Excel (.xlsx, .xls)
               </p>
               <p className="text-xs text-muted-foreground mt-1">
@@ -149,13 +159,13 @@ export function FileUploader({ onFileSelect, isLoading }: FileUploaderProps) {
         </Card>
       ) : (
         <Card className="border-primary/50 bg-primary/5">
-          <CardContent className="flex items-center justify-between py-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+          <CardContent className="flex items-center justify-between py-4 px-4">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10">
                 <FileSpreadsheet className="h-6 w-6 text-primary" />
               </div>
-              <div>
-                <p className="font-medium">{selectedFile.name}</p>
+              <div className="min-w-0">
+                <p className="font-medium truncate">{selectedFile.name}</p>
                 <p className="text-sm text-muted-foreground">
                   {formatFileSize(selectedFile.size)}
                 </p>
@@ -166,7 +176,7 @@ export function FileUploader({ onFileSelect, isLoading }: FileUploaderProps) {
               size="icon"
               onClick={clearFile}
               disabled={isLoading}
-              className="text-muted-foreground hover:text-destructive"
+              className="text-muted-foreground hover:text-destructive h-11 w-11 shrink-0"
             >
               <X className="h-5 w-5" />
             </Button>
