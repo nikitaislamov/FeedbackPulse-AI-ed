@@ -102,8 +102,8 @@ export default function HomePage() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight text-foreground mb-4 max-w-3xl mx-auto">
-            Поймите, что бесит ваших клиентов —{" "}
-            <span className="text-primary">за минуту, а не за день</span>
+            Выявите болевые точки ваших клиентов —{" "}
+            <span className="text-primary">быстро и эффективно, без потери времени.</span>
           </h1>
 
           <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto mb-10">
