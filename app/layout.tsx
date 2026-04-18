@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Manrope, Space_Grotesk } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
 import { Header } from "@/components/Header";
@@ -7,7 +7,23 @@ import { Footer } from "@/components/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin", "cyrillic"] });
+const inter = Inter({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const manrope = Manrope({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "FeedbackPulse AI - Анализ отзывов с помощью ИИ",
@@ -28,8 +44,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className="dark">
-      <body className={`${inter.className} antialiased min-h-dvh flex flex-col bg-background text-foreground`}>
+    <html lang="ru">
+      <body
+        className={`${inter.variable} ${manrope.variable} ${spaceGrotesk.variable} font-sans antialiased min-h-dvh flex flex-col bg-background text-foreground`}
+      >
         <AuthProvider>
           <Header />
           <main className="flex-1">{children}</main>

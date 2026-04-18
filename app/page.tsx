@@ -2,15 +2,14 @@
 
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
-import { ArrowRight, Sparkles, Shield, Zap, BarChart3 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Check } from "lucide-react";
 import { FileUploader } from "@/components/FileUploader";
 import { ColumnMapper } from "@/components/ColumnMapper";
 import { AnalysisDashboard } from "@/components/AnalysisDashboard";
 import { AnalysisSkeleton } from "@/components/AnalysisSkeleton";
 import { parseFile, validateReviews, type ParsedData } from "@/lib/parsers";
 import type { AnalysisResult } from "@/app/api/analyze/route";
+import { cn } from "@/lib/utils";
 
 type Step = "upload" | "mapping" | "analyzing" | "results";
 
@@ -74,7 +73,7 @@ export default function HomePage() {
 
         setAnalysisResult(data.result);
         setStep("results");
-        toast.success("Анализ завершен!");
+        toast.success("Анализ завершён!");
       } catch (error) {
         const message = error instanceof Error ? error.message : "Произошла ошибка";
         toast.error(message);
@@ -94,129 +93,74 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 py-8">
-      {/* Hero Section — только на шаге upload */}
+    <div className="container mx-auto px-4 sm:px-6 py-10 sm:py-14">
+      {/* ── Hero (только на upload) ── */}
       {step === "upload" && (
-        <section className="text-center mb-8 sm:mb-12 pt-2 sm:pt-6 lg:pt-16">
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-xs sm:text-sm font-medium text-primary mb-6">
-            <Sparkles className="h-4 w-4 shrink-0" />
-            AI-powered анализ отзывов
+        <section className="text-center mb-10 sm:mb-14 pt-2 sm:pt-4">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary uppercase tracking-widest mb-6">
+            AI-powered аналитика отзывов
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold tracking-tight leading-tight mb-4">
-            Превращайте отзывы в{" "}
-            <span className="text-primary">действенные инсайты</span>
+
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight text-foreground mb-4 max-w-3xl mx-auto">
+            Поймите, что бесит ваших клиентов —{" "}
+            <span className="text-primary">за минуту, а не за день</span>
           </h1>
-          <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mt-4 mb-8">
-            FeedbackPulse AI анализирует ваши отзывы клиентов, определяет тональность,
-            выявляет проблемы и формирует готовый план действий
+
+          <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto mb-10">
+            Загрузите выгрузку отзывов — получите темы, тональность и список того,
+            что чинить в первую очередь.
           </p>
 
-          {/* Features */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto mb-8 sm:mb-12">
-            <Card className="border-muted">
-              <CardContent className="p-5 sm:p-6">
-                <div className="flex items-start gap-3 sm:flex-col sm:items-center sm:text-center">
-                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 sm:mb-4">
-                    <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 sm:mb-2">Быстрый анализ</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Мгновенная обработка до 50 отзывов за один запрос
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="border-muted">
-              <CardContent className="p-5 sm:p-6">
-                <div className="flex items-start gap-3 sm:flex-col sm:items-center sm:text-center">
-                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 sm:mb-4">
-                    <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 sm:mb-2">Визуализация</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Наглядные графики и диаграммы по результатам анализа
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="border-muted sm:col-span-2 lg:col-span-1">
-              <CardContent className="p-5 sm:p-6">
-                <div className="flex items-start gap-3 sm:flex-col sm:items-center sm:text-center">
-                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 sm:mb-4">
-                    <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 sm:mb-2">План действий</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Конкретные рекомендации для улучшения продукта
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Upload zone */}
+          <div className="max-w-2xl mx-auto">
+            <FileUploader onFileSelect={handleFileSelect} isLoading={isLoading} />
           </div>
         </section>
       )}
 
-      {/* Progress Steps */}
+      {/* ── Progress Steps (не на upload) ── */}
       {step !== "upload" && (
-        <div className="mb-6 sm:mb-8">
-          <div className="flex items-center justify-center gap-1 sm:gap-4 mb-4 sm:mb-6 overflow-x-auto">
-            <StepIndicator
-              number={1}
-              label="Загрузка"
-              active={step === "upload"}
-              completed={step !== "upload"}
-            />
-            <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
+        <div className="mb-8 sm:mb-10">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4 overflow-x-auto">
+            <StepIndicator number={1} label="Загрузка" completed={step !== "upload"} />
+            <StepArrow />
             <StepIndicator
               number={2}
               label="Маппинг"
               active={step === "mapping"}
               completed={step === "analyzing" || step === "results"}
             />
-            <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
+            <StepArrow />
             <StepIndicator
               number={3}
               label="Анализ"
               active={step === "analyzing"}
               completed={step === "results"}
             />
-            <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
+            <StepArrow />
             <StepIndicator
               number={4}
               label="Результаты"
               active={step === "results"}
-              completed={false}
             />
           </div>
           <div className="flex justify-center">
-            <Button variant="ghost" size="sm" onClick={handleReset} className="min-h-11">
-              Начать заново
-            </Button>
+            <button
+              onClick={handleReset}
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-white"
+            >
+              ← Начать заново
+            </button>
           </div>
         </div>
       )}
 
-      {/* Main Content */}
+      {/* ── Main Content ── */}
       <div className="max-w-4xl mx-auto">
-        {step === "upload" && (
-          <div className="space-y-4">
-            <h2 className="text-lg sm:text-xl font-semibold text-center mb-4">
-              Загрузите файл с отзывами
-            </h2>
-            <FileUploader onFileSelect={handleFileSelect} isLoading={isLoading} />
-          </div>
-        )}
-
         {step === "mapping" && parsedData && (
           <div className="space-y-4">
-            <div className="text-center mb-4">
-              <h2 className="text-lg sm:text-xl font-semibold">Настройте маппинг колонок</h2>
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-bold text-foreground">Настройте маппинг колонок</h2>
               <p className="text-sm text-muted-foreground mt-1">
                 Найдено {parsedData.headers.length} колонок и {parsedData.rows.length} строк
               </p>
@@ -239,34 +183,42 @@ export default function HomePage() {
   );
 }
 
+function StepArrow() {
+  return (
+    <ArrowRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+  );
+}
+
 function StepIndicator({
   number,
   label,
-  active,
-  completed,
+  active = false,
+  completed = false,
 }: {
   number: number;
   label: string;
-  active: boolean;
-  completed: boolean;
+  active?: boolean;
+  completed?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-1.5 sm:gap-2">
+    <div className="flex items-center gap-2">
       <div
-        className={`flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full text-xs sm:text-sm font-medium transition-colors ${
+        className={cn(
+          "flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full text-xs sm:text-sm font-bold transition-all",
           active
-            ? "bg-primary text-primary-foreground"
+            ? "gradient-primary text-white shadow-sm shadow-primary/30"
             : completed
-              ? "bg-primary/20 text-primary"
-              : "bg-muted text-muted-foreground"
-        }`}
+            ? "bg-primary/15 text-primary"
+            : "bg-slate-100 text-muted-foreground"
+        )}
       >
-        {number}
+        {completed ? <Check className="h-3.5 w-3.5" /> : number}
       </div>
       <span
-        className={`hidden sm:block text-sm font-medium ${
+        className={cn(
+          "hidden sm:block text-sm font-medium",
           active ? "text-foreground" : "text-muted-foreground"
-        }`}
+        )}
       >
         {label}
       </span>
